@@ -32,6 +32,9 @@ private Void handleMessage(final Message msg) {
 ```
 
 ## Spring Boot Test-Application
+
+
+### Simple App
 The `hono-spring-testapp` just uses the hono spring integration dependency to start a spring-boot app and test the spring-cloud-stream binder implementation. This allows to consume telementry very easily by using the spring-cloud-stream abstraction like:
 ```
 package org.micha.honotestapp;
@@ -57,4 +60,25 @@ public class HonoTestAppApplication {
 
 }
 
+```
+
+### Websocket Transformation
+The `hono-spring-websocket-testapp` makes use of the `spring-cloud-stream-binder-hono` to consume hono telemetry messages and forward it to a websocket interface consumed by the example application as well and showing on the simple javascript app on `localhost:8080`
+```
+@SpringBootApplication
+@EnableBinding(Sink.class)
+public class HonoTestAppApplication {
+
+    @Autowired
+    private SimpMessagingTemplate template;
+
+    public static void main(final String[] args) {
+        SpringApplication.run(HonoTestAppApplication.class, args);
+    }
+
+    @StreamListener(Sink.INPUT)
+    public void handle(final String input) {
+        template.convertAndSend("/topic/message", input);
+    }
+}
 ```
