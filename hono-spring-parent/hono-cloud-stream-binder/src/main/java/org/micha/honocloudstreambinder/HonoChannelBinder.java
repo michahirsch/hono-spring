@@ -13,8 +13,10 @@ import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.core.MessageProducer;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
 
 import io.vertx.core.Vertx;
 
@@ -59,7 +61,14 @@ public class HonoChannelBinder extends
     @Override
     protected MessageHandler createProducerMessageHandler(final ProducerDestination arg0,
             final ExtendedProducerProperties<HonoProducerProperties> arg1, final MessageChannel arg2) throws Exception {
-        return null;
+        return new MessageHandler() {
+
+            @Override
+            public void handleMessage(final Message<?> message) throws MessagingException {
+                System.out.println("NOT IMPLEMENTED TO OUTPUT");
+
+            }
+        };
     }
 
 }
